@@ -1,8 +1,0 @@
-[phases.setup]
-nixPkgs = ['jdk17']
-
-[phases.build]
-cmds = ['mvn -DskipTests clean package -q']
-
-[start]
-cmd = 'java -Dspring.profiles.active=prod -jar target/blooddonor-0.0.1-SNAPSHOT.jar'
