@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{_layout :: head('Dashboard')}"></head>
+<body>
+<nav th:replace="~{_layout :: navbar}"></nav>
+
+<!-- Dash Header -->
+<div class="dash-header">
+  <div class="container">
+    <div class="d-flex align-items-center gap-4 mb-5">
+      <div class="dash-avatar"
+           th:text="${#strings.substring(user.name,0,1).toUpperCase()}">R</div>
+      <div>
+        <p class="mb-0" style="color:rgba(255,255,255,0.6);font-size:.85rem;">
+          Welcome back
+        </p>
+        <h2 style="font-family:'Fraunces',serif;font-weight:700;
+                   font-size:1.8rem;margin:0;"
+            th:text="${user.name}">Name</h2>
+        <p class="mb-0"
+           style="color:rgba(255,255,255,0.55);font-size:.85rem;"
+           th:text="${user.email}">email</p>
+      </div>
+    </div>
+
+    <!-- Stats — only when profile exists -->
+    <div class="row g-3" th:if="${hasProfile}">
+      <div class="col-6 col-md-3">
+        <div class="dash-stat-card">
+          <div class="dash-stat-num" th:text="${profile.bloodGroup}">—</div>
+          <div class="dash-stat-label">Blood Group</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="dash-stat-card">
+          <div class="dash-stat-num" th:text="${profile.totalDonations}">0</div>
+          <div class="dash-stat-label">Donations</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="dash-stat-card">
+          <div class="dash-stat-num" th:text="${profile.city}">—</div>
+          <div class="dash-stat-label">Your City</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="dash-stat-card">
+          <div class="dash-stat-num"
+               th:text="${profile.available} ? 'ON' : 'OFF'"
+               th:style="${profile.available}
+                          ? 'color:#a5d6a7' : 'color:#ef9a9a'">ON</div>
+          <div class="dash-stat-label">Availability</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Body -->
+<section class="section-pad bg-cream">
+  <div class="container">
+
+    <div th:if="${success}" class="flash flash-success" th:text="${success}"></div>
+    <div th:if="${error}"   class="flash flash-error"   th:text="${error}"></div>
+
+    <!-- No Profile Yet -->
+    <div th:if="${!hasProfile}">
+      <div class="card p-5 text-center" style="max-width:500px;margin:0 auto;">
+        <div style="font-size:3.5rem;margin-bottom:16px;">📋</div>
+        <h4 style="font-family:'Fraunces',serif;font-weight:700;">
+          Complete Your Profile
+        </h4>
+        <p class="text-muted">
+          Add your blood group and location so people in need can find you.
+        </p>
+        <a href="/donor/register" class="btn-red mt-3" style="padding:12px 30px;">
+          <i class="bi bi-plus-circle me-2"></i>Set Up Donor Profile
+        </a>
+      </div>
+    </div>
+
+    <!-- Profile Exists -->
+    <div th:if="${hasProfile}">
+      <div class="row g-4">
+
+        <!-- Availability Toggle -->
+        <div class="col-12">
+          <div class="toggle-wrap">
+            <div>
+              <div class="toggle-label">
+                <i class="bi bi-circle-fill me-2"
+                   th:style="${profile.available}
+                              ? 'color:#27ae60;font-size:.6rem'
+                              : 'color:#e74c3c;font-size:.6rem'"></i>
+                Availability Status
+              </div>
+              <div class="toggle-sub">
+                You are currently
+                <strong th:text="${profile.available}
+                                  ? 'available to donate'
+                                  : 'marked as unavailable'">
+                  available
+                </strong>.
+                Toggle to update.
+              </div>
+            </div>
+            <form action="/donor/toggle" method="post" class="ms-auto">
+              <button type="submit"
+                      th:class="${profile.available}
+                          ? 'btn btn-outline-danger btn-sm fw-700 px-4'
+                          : 'btn btn-success btn-sm fw-700 px-4'">
+                <i class="bi me-1"
+                   th:class="${profile.available}
+                               ? 'bi bi-toggle-on' : 'bi bi-toggle-off'"></i>
+                <span th:text="${profile.available}
+                                ? 'Mark Unavailable' : 'Mark Available'">
+                  Toggle
+                </span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Profile Card -->
+        <div class="col-md-6">
+          <div class="card p-4 h-100">
+            <h6 class="fw-800 mb-4" style="font-size:1rem;">
+              <i class="bi bi-person-fill text-red me-2"></i>Donor Profile
+            </h6>
+            <div class="d-flex flex-column gap-3">
+              <div class="d-flex gap-3 align-items-center">
+                <div class="blood-badge" th:text="${profile.bloodGroup}">A+</div>
+                <div>
+                  <div class="fw-700" th:text="${user.name}">Name</div>
+                  <div class="text-muted small" th:text="${user.email}">email</div>
+                </div>
+              </div>
+              <hr class="my-1"/>
+              <div class="small d-flex flex-column gap-2">
+                <div>
+                  <i class="bi bi-telephone me-2 text-red"></i>
+                  <span th:text="${profile.phone ?: 'Not set'}">Phone</span>
+                </div>
+                <div>
+                  <i class="bi bi-geo-alt me-2 text-red"></i>
+                  <span th:text="${profile.city
+                                  + (profile.state != null
+                                     ? ', ' + profile.state : '')}">
+                    City
+                  </span>
+                </div>
+                <div th:if="${profile.address}">
+                  <i class="bi bi-house me-2 text-red"></i>
+                  <span th:text="${profile.address}">Address</span>
+                </div>
+                <div>
+                  <i class="bi bi-calendar me-2 text-red"></i>
+                  Last donated:
+                  <span th:text="${profile.lastDonated != null
+                                   ? profile.lastDonated : 'Not recorded'}">
+                    Date
+                  </span>
+                </div>
+                <div>
+                  <i class="bi bi-heart me-2 text-red"></i>
+                  Total donations:
+                  <span th:text="${profile.totalDonations}">0</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-auto pt-3">
+              <a href="/donor/edit" class="btn-outline-red"
+                 style="padding:8px 20px;font-size:.85rem;">
+                <i class="bi bi-pencil me-1"></i>Edit Profile
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tips Card -->
+        <div class="col-md-6">
+          <div class="card p-4 h-100"
+               style="border-left:4px solid var(--red, #c0392b);">
+            <h6 class="fw-800 mb-4" style="font-size:1rem;">
+              <i class="bi bi-lightbulb text-red me-2"></i>Donation Tips
+            </h6>
+            <ul class="small text-muted d-flex flex-column gap-3"
+                style="list-style:none;padding:0;">
+              <li>
+                <i class="bi bi-check-circle-fill me-2"
+                   style="color:#27ae60;"></i>
+                Drink plenty of water before donating
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill me-2"
+                   style="color:#27ae60;"></i>
+                Eat a healthy meal 2–3 hours before donation
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill me-2"
+                   style="color:#27ae60;"></i>
+                Wait at least 56 days between whole blood donations
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill me-2"
+                   style="color:#27ae60;"></i>
+                Rest for 10–15 minutes after donating
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill me-2"
+                   style="color:#27ae60;"></i>
+                Keep your availability updated so people can find you
+              </li>
+            </ul>
+            <div class="mt-auto pt-3">
+              <a href="/search" class="btn-red"
+                 style="padding:8px 20px;font-size:.85rem;">
+                <i class="bi bi-search me-1"></i>Find Someone Who Needs Help
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer th:replace="~{_layout :: footer}"></footer>
+<th:block th:replace="~{_layout :: scripts}"></th:block>
+</body>
+</html>

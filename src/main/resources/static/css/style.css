@@ -1,0 +1,488 @@
+/* ═══════════════════════════════════════════════
+   Blood Donor Finder — Global Styles
+═══════════════════════════════════════════════ */
+
+:root {
+  --red:       #c0392b;
+  --red-dark:  #96281b;
+  --red-light: #e74c3c;
+  --red-pale:  #fdecea;
+  --red-glow:  rgba(192,57,43,0.12);
+  --cream:     #fdf6f0;
+  --white:     #ffffff;
+  --gray-200:  #f0f0f0;
+  --gray-600:  #6c757d;
+  --gray-800:  #343a40;
+  --dark:      #1a1a2e;
+  --radius:    14px;
+  --radius-sm: 8px;
+  --shadow:    0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.13);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--cream);
+  color: var(--gray-800);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Navbar ─────────────────────────────────── */
+.navbar {
+  background: var(--white);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  padding: 14px 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.brand-text {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--red);
+  margin-left: 6px;
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+  color: var(--gray-800);
+  padding: 6px 12px !important;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s, color 0.2s;
+}
+
+.navbar-nav .nav-link:hover {
+  background: var(--red-pale);
+  color: var(--red);
+}
+
+/* ── Hero ───────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d1b1b 60%, #96281b 100%);
+  color: var(--white);
+  padding: 100px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 50%,
+    rgba(192,57,43,0.25) 0%, transparent 65%);
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #ffcdd2;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  line-height: 1.15;
+  font-weight: 700;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.hero h1 span { color: #ff8a80; }
+
+.hero p {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.75);
+  max-width: 520px;
+  margin-bottom: 36px;
+  position: relative;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.hero-visual {
+  font-size: 10rem;
+  line-height: 1;
+  text-align: center;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+  animation: float 4s ease-in-out infinite;
+  position: relative;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-14px); }
+}
+
+/* ── Stats Bar ──────────────────────────────── */
+.stats-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 28px 0;
+}
+
+.stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--gray-600);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* ── Section helpers ────────────────────────── */
+.section-pad  { padding: 72px 0; }
+.bg-cream     { background: var(--cream); }
+
+.section-tag {
+  display: inline-block;
+  background: var(--red-pale);
+  color: var(--red);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.2;
+}
+
+/* ── Cards ──────────────────────────────────── */
+.card {
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--white);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-header-red {
+  background: linear-gradient(135deg, var(--red-dark), var(--red-light));
+  color: var(--white);
+  border-radius: var(--radius) var(--radius) 0 0 !important;
+  padding: 18px 24px;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+/* ── Donor cards ────────────────────────────── */
+.donor-card {
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  background: var(--white);
+  padding: 22px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.donor-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red-dark), var(--red-light));
+}
+
+.donor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.blood-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--red-dark), var(--red-light));
+  color: var(--white);
+  font-weight: 800;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px var(--red-glow);
+}
+
+.availability-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.available   { background: #e8f5e9; color: #2e7d32; }
+.unavailable { background: #fce4ec; color: #c62828; }
+
+/* ── Buttons ────────────────────────────────── */
+.btn-red {
+  background: linear-gradient(135deg, var(--red-dark), var(--red-light));
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 11px 28px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-red:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px var(--red-glow);
+  color: var(--white);
+}
+
+.btn-red:active { transform: scale(0.98); }
+
+.btn-outline-red {
+  background: transparent;
+  color: var(--red);
+  border: 2px solid var(--red);
+  border-radius: var(--radius-sm);
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-outline-red:hover { background: var(--red); color: var(--white); }
+
+.btn-outline-white {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: var(--radius-sm);
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-outline-white:hover {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+/* ── Forms ──────────────────────────────────── */
+.form-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--gray-800);
+  margin-bottom: 6px;
+}
+
+.form-control, .form-select {
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: var(--white);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-glow);
+  outline: none;
+}
+
+/* ── Auth pages ─────────────────────────────── */
+.auth-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d1b1b 100%);
+  padding: 40px 16px;
+}
+
+.auth-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 44px 40px;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+}
+
+.auth-logo  { font-size: 2.5rem; text-align: center; margin-bottom: 6px; }
+.auth-title { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 700; text-align: center; color: var(--dark); margin-bottom: 4px; }
+.auth-sub   { text-align: center; color: var(--gray-600); font-size: 0.88rem; margin-bottom: 30px; }
+
+.text-red   { color: var(--red) !important; }
+
+/* ── Dashboard ──────────────────────────────── */
+.dash-header {
+  background: linear-gradient(135deg, var(--dark), #2d1b1b);
+  color: var(--white);
+  padding: 40px 0 50px;
+}
+
+.dash-avatar {
+  width: 64px; height: 64px;
+  background: var(--red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.dash-stat-card {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  text-align: center;
+}
+
+.dash-stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ff8a80;
+  line-height: 1;
+}
+
+.dash-stat-label {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.65);
+  margin-top: 4px;
+}
+
+/* ── Toggle wrap ────────────────────────────── */
+.toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  box-shadow: var(--shadow);
+}
+
+.toggle-label { font-weight: 600; font-size: 0.95rem; }
+.toggle-sub   { font-size: 0.78rem; color: var(--gray-600); }
+
+/* ── Flash messages ─────────────────────────── */
+.flash {
+  padding: 13px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.flash-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+.flash-error   { background: #fdecea; color: #c0392b; border: 1px solid #f5c6cb; }
+.flash-info    { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+
+/* ── How It Works steps ─────────────────────── */
+.step-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 30px 24px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.step-icon { font-size: 2.2rem; margin-bottom: 12px; }
+
+.step-num {
+  width: 44px; height: 44px;
+  background: var(--red-pale);
+  color: var(--red);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+}
+
+/* ── Table ──────────────────────────────────── */
+.table th {
+  background: #f8f9fa;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-600);
+  border-bottom: 2px solid var(--gray-200);
+  padding: 12px 16px;
+}
+
+.table td {
+  padding: 12px 16px;
+  vertical-align: middle;
+  font-size: 0.88rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.table tbody tr:hover { background: var(--red-pale); }
+
+/* ── Footer ─────────────────────────────────── */
+footer {
+  background: var(--dark);
+  margin-top: 0;
+}
+
+/* ── Responsive ─────────────────────────────── */
+@media (max-width: 768px) {
+  .hero { padding: 60px 0 50px; }
+  .hero-visual { font-size: 6rem; margin-top: 30px; }
+  .auth-card { padding: 30px 22px; }
+}
+
+.fw-700 { font-weight: 700 !important; }
+.fw-800 { font-weight: 800 !important; }

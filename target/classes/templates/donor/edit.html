@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('Edit Profile')}"></head>
+<body>
+<nav th:replace="~{_layout :: navbar}"></nav>
+
+<div style="background:linear-gradient(135deg,#1a1a2e,#2d1b1b);
+            padding:40px 0;color:#fff;">
+  <div class="container">
+    <a href="/donor/dashboard"
+       style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:.88rem;">
+      <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
+    </a>
+    <h1 style="font-family:'Fraunces',serif;font-size:2rem;
+               font-weight:700;margin-top:12px;">
+      Edit Donor Profile
+    </h1>
+  </div>
+</div>
+
+<section class="section-pad bg-cream">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+
+        <div th:if="${success}" class="flash flash-success" th:text="${success}"></div>
+        <div th:if="${error}"   class="flash flash-error"   th:text="${error}"></div>
+
+        <div class="card p-4 p-md-5">
+          <form action="/donor/edit" method="post"
+                th:object="${profile}" novalidate>
+            <input type="hidden" th:field="*{id}"/>
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label class="form-label">Blood Group</label>
+                <select th:field="*{bloodGroup}"
+                        th:class="${#fields.hasErrors('bloodGroup')}
+                                   ? 'form-select is-invalid' : 'form-select'">
+                  <option th:each="bg : ${bloodGroups}"
+                          th:value="${bg}" th:text="${bg}"
+                          th:selected="${bg == profile.bloodGroup}"/>
+                </select>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('bloodGroup')}"
+                     th:errors="*{bloodGroup}">Error</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Phone</label>
+                <input type="text" th:field="*{phone}"
+                       th:class="${#fields.hasErrors('phone')}
+                                  ? 'form-control is-invalid' : 'form-control'"
+                       placeholder="10 digit number"/>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('phone')}"
+                     th:errors="*{phone}">Error</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">City</label>
+                <input type="text" th:field="*{city}"
+                       th:class="${#fields.hasErrors('city')}
+                                  ? 'form-control is-invalid' : 'form-control'"
+                       placeholder="Mumbai"/>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('city')}"
+                     th:errors="*{city}">Error</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">State</label>
+                <input type="text" th:field="*{state}"
+                       th:class="${#fields.hasErrors('state')}
+                                  ? 'form-control is-invalid' : 'form-control'"
+                       placeholder="Maharashtra"/>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('state')}"
+                     th:errors="*{state}">Error</div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Address</label>
+                <input type="text" th:field="*{address}"
+                       class="form-control" placeholder="Street, Area, Pin code"/>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Last Donation Date</label>
+                <input type="date" th:field="*{lastDonated}" class="form-control"/>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Total Donations</label>
+                <input type="number" th:field="*{totalDonations}"
+                       class="form-control" min="0"/>
+              </div>
+
+              <div class="col-12 mt-2">
+                <button type="submit" class="btn-red w-100" style="padding:13px;">
+                  <i class="bi bi-check me-2"></i>Save Changes
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer th:replace="~{_layout :: footer}"></footer>
+<th:block th:replace="~{_layout :: scripts}"></th:block>
+</body>
+</html>

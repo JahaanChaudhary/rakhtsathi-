@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('Error')}"></head>
+<body>
+<nav th:replace="~{_layout :: navbar}"></nav>
+
+<div style="min-height:70vh;display:flex;align-items:center;
+            justify-content:center;padding:40px 16px;">
+  <div style="text-align:center;max-width:480px;">
+    <div style="font-family:'Fraunces',serif;font-size:6rem;
+                font-weight:700;color:#c0392b;line-height:1;
+                margin-bottom:16px;"
+         th:text="${code} ?: '500'">500</div>
+    <h2 style="font-family:'Fraunces',serif;font-weight:700;
+               font-size:1.8rem;margin-bottom:12px;"
+        th:text="${title} ?: 'Something Went Wrong'">
+      Something Went Wrong
+    </h2>
+    <p style="color:#6c757d;font-size:1rem;margin-bottom:32px;"
+       th:text="${message} ?: 'An unexpected error occurred. Please try again.'">
+      An unexpected error occurred.
+    </p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="/" class="btn-red" style="padding:11px 28px;">
+        <i class="bi bi-house me-2"></i>Go Home
+      </a>
+      <a href="javascript:history.back()"
+         class="btn-outline-red" style="padding:11px 28px;">
+        <i class="bi bi-arrow-left me-2"></i>Go Back
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer th:replace="~{_layout :: footer}"></footer>
+<th:block th:replace="~{_layout :: scripts}"></th:block>
+</body>
+</html>

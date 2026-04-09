@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('Admin Dashboard')}"></head>
+<body th:inline="none">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<nav th:replace="~{_layout :: navbar}"></nav>
+
+<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:40px 0;">
+  <div class="container">
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <div style="width:48px;height:48px;background:#c0392b;border-radius:12px;
+                  display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🛡️</div>
+      <div>
+        <p class="mb-0" style="color:rgba(255,255,255,0.5);font-size:.78rem;
+                                text-transform:uppercase;letter-spacing:.08em;">Control Panel</p>
+        <h2 style="font-family:'Fraunces',serif;font-weight:700;font-size:1.8rem;margin:0;">Admin Dashboard</h2>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-6 col-md-3">
+        <div class="dash-stat-card">
+          <div class="dash-stat-num" th:text="${totalUsers}">0</div>
+          <div class="dash-stat-label">Total Users</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="dash-stat-card">
+          <div class="dash-stat-num" th:text="${totalDonors}">0</div>
+          <div class="dash-stat-label">Donor Profiles</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="dash-stat-card">
+          <div class="dash-stat-num" th:text="${availableDonors}">0</div>
+          <div class="dash-stat-label">Available Now</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="dash-stat-card">
+          <div class="dash-stat-num" style="color:#ffcc80;" th:text="${pendingRequests}">0</div>
+          <div class="dash-stat-label">Pending Requests</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section-pad bg-cream">
+  <div class="container">
+
+    <div th:if="${success}" class="flash flash-success mb-4" th:text="${success}"></div>
+    <div th:if="${error}"   class="flash flash-error   mb-4" th:text="${error}"></div>
+
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h6 class="fw-800 mb-3" style="font-size:.95rem;">
+            <i class="bi bi-pie-chart-fill text-red me-2"></i>Blood Group Distribution
+          </h6>
+          <canvas id="bloodGroupChart" height="220"></canvas>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h6 class="fw-800 mb-3" style="font-size:.95rem;">
+            <i class="bi bi-bar-chart-fill text-red me-2"></i>Donors by City
+          </h6>
+          <canvas id="cityChart" height="220"></canvas>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h6 class="fw-800 mb-3" style="font-size:.95rem;">
+            <i class="bi bi-circle-half text-red me-2"></i>Request Status
+          </h6>
+          <canvas id="statusChart" height="220"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-5">
+      <div class="card-header-red d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <span><i class="bi bi-droplet-fill me-2"></i>Blood Requests</span>
+        <span id="req-count-label" style="font-size:.82rem;font-weight:400;opacity:.85;"></span>
+      </div>
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+          <tr><th>#</th><th>Requester</th><th>Blood Group</th><th>City</th>
+            <th>Hospital</th><th>Notified</th><th>Status</th><th>Date</th><th>Action</th></tr>
+          </thead>
+          <tbody id="req-tbody"></tbody>
+        </table>
+      </div>
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 px-4 py-3"
+           style="border-top:1px solid #f0f0f0;">
+        <div class="text-muted small" id="req-page-info"></div>
+        <nav><ul class="pagination pagination-sm mb-0 gap-1" id="req-pagination"></ul></nav>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header-red d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <span><i class="bi bi-people-fill me-2"></i>All Donors</span>
+        <span id="donor-count-label" style="font-size:.82rem;font-weight:400;opacity:.85;"></span>
+      </div>
+      <div class="d-flex gap-3 flex-wrap p-3" style="border-bottom:1px solid #f0f0f0;">
+        <input id="donor-search" type="text" class="form-control"
+               placeholder="Search by name or city..." style="max-width:260px;"/>
+        <select id="donor-blood-filter" class="form-select" style="max-width:140px;">
+          <option value="">All Blood Groups</option>
+          <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+          <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+        </select>
+        <select id="donor-status-filter" class="form-select" style="max-width:150px;">
+          <option value="">All Status</option>
+          <option value="true">Available</option>
+          <option value="false">Unavailable</option>
+        </select>
+        <button onclick="clearDonorFilters()" class="btn btn-outline-secondary btn-sm px-3">Clear</button>
+      </div>
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+          <tr><th>#</th><th>Name</th><th>Blood Group</th><th>City</th>
+            <th>Phone</th><th>Donations</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody id="donor-tbody"></tbody>
+        </table>
+      </div>
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 px-4 py-3"
+           style="border-top:1px solid #f0f0f0;">
+        <div class="text-muted small" id="donor-page-info"></div>
+        <nav><ul class="pagination pagination-sm mb-0 gap-1" id="donor-pagination"></ul></nav>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer th:replace="~{_layout :: footer}"></footer>
+<th:block th:replace="~{_layout :: scripts}"></th:block>
+
+<script id="requests-json" type="application/json" th:utext="${requestsJson}">[]</script>
+<script id="donors-json"   type="application/json" th:utext="${donorsJson}">[]</script>
+
+<script>
+  var ALL_REQUESTS    = JSON.parse(document.getElementById('requests-json').textContent || '[]');
+  var ALL_DONORS      = JSON.parse(document.getElementById('donors-json').textContent   || '[]');
+  var FILTERED_DONORS = ALL_DONORS.slice();
+  var PAGE_SIZE       = 5;
+
+  var reqPage   = 1;
+  var donorPage = 1;
+
+  document.addEventListener('DOMContentLoaded', function () {
+
+      buildCharts();
+      renderRequests();
+      renderDonors();
+
+      document.getElementById('donor-search').addEventListener('input', applyFilters);
+      document.getElementById('donor-blood-filter').addEventListener('change', applyFilters);
+      document.getElementById('donor-status-filter').addEventListener('change', applyFilters);
+  });
+
+  function buildCharts() {
+      var bgCount = {};
+      ALL_DONORS.forEach(function (d) { bgCount[d.bloodGroup] = (bgCount[d.bloodGroup] || 0) + 1; });
+      new Chart(document.getElementById('bloodGroupChart'), {
+          type: 'doughnut',
+          data: { labels: Object.keys(bgCount), datasets: [{ data: Object.values(bgCount),
+              backgroundColor: ['#c0392b','#e74c3c','#96281b','#ff7675','#d63031','#e17055','#fdcb6e','#b2bec3'],
+              borderWidth: 2, borderColor: '#fff' }] },
+          options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      });
+
+      var cityCount = {};
+      ALL_DONORS.forEach(function (d) { cityCount[d.city] = (cityCount[d.city] || 0) + 1; });
+      var cityKeys = Object.keys(cityCount).sort(function (a,b) { return cityCount[b]-cityCount[a]; }).slice(0,6);
+      new Chart(document.getElementById('cityChart'), {
+          type: 'bar',
+          data: { labels: cityKeys, datasets: [{ label: 'Donors',
+              data: cityKeys.map(function(k){return cityCount[k];}),
+              backgroundColor: 'rgba(192,57,43,0.8)', borderRadius: 6 }] },
+          options: { responsive: true, plugins: { legend: { display: false } },
+                     scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+      });
+
+      var pending   = ALL_REQUESTS.filter(function(r){return r.status==='PENDING';}).length;
+      var fulfilled = ALL_REQUESTS.filter(function(r){return r.status==='FULFILLED';}).length;
+      new Chart(document.getElementById('statusChart'), {
+          type: 'doughnut',
+          data: { labels: ['Pending','Fulfilled'],
+                  datasets: [{ data: [pending, fulfilled],
+                      backgroundColor: ['#e74c3c','#27ae60'], borderWidth: 2, borderColor: '#fff' }] },
+          options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      });
+  }
+
+  function applyFilters() {
+      var text   = document.getElementById('donor-search').value.toLowerCase().trim();
+      var blood  = document.getElementById('donor-blood-filter').value;
+      var status = document.getElementById('donor-status-filter').value;
+      FILTERED_DONORS = ALL_DONORS.filter(function (d) {
+          var mt = !text  || d.name.toLowerCase().includes(text) || d.city.toLowerCase().includes(text);
+          var mb = !blood  || d.bloodGroup === blood;
+          var ms = status === '' || String(d.available) === status;
+          return mt && mb && ms;
+      });
+      donorPage = 1;
+      renderDonors();
+  }
+
+  function clearDonorFilters() {
+      document.getElementById('donor-search').value = '';
+      document.getElementById('donor-blood-filter').value = '';
+      document.getElementById('donor-status-filter').value = '';
+      FILTERED_DONORS = ALL_DONORS.slice();
+      donorPage = 1;
+      renderDonors();
+  }
+
+  function fmtDate(s) {
+      if (!s) return '-';
+      var d = new Date(s);
+      return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'})
+           + ' ' + d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:false});
+  }
+
+  function renderRequests() {
+      var items  = ALL_REQUESTS;
+      var total  = items.length;
+      var pages  = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      if (reqPage > pages) reqPage = pages;
+      var start  = (reqPage - 1) * PAGE_SIZE;
+      var end    = Math.min(start + PAGE_SIZE, total);
+
+      document.getElementById('req-count-label').textContent =
+          total === 0 ? 'No records' : 'Showing ' + (start+1) + '-' + end + ' of ' + total;
+      document.getElementById('req-page-info').textContent = 'Page ' + reqPage + ' of ' + pages;
+
+      var tbody = document.getElementById('req-tbody');
+      tbody.innerHTML = '';
+      if (total === 0) {
+          tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted py-4">No requests yet.</td></tr>';
+      } else {
+          items.slice(start, end).forEach(function (r, i) {
+              var rowNum = start + i + 1;
+              var badge  = r.status === 'FULFILLED'
+                  ? '<span class="availability-badge available">Fulfilled</span>'
+                  : '<span class="availability-badge unavailable">Pending</span>';
+              var action = r.status === 'PENDING'
+                  ? '<form action="/admin/request/fulfill/' + r.id + '" method="post" style="display:inline;">' +
+                    '<button type="submit" class="btn btn-success btn-sm fw-600">Fulfill</button></form>'
+                  : '<span class="text-muted small">Done</span>';
+              tbody.innerHTML +=
+                  '<tr><td>' + rowNum + '</td>' +
+                  '<td><div class="fw-600">' + (r.requesterName||'-') + '</div>' +
+                  '<div class="text-muted" style="font-size:.75rem;">' + (r.requesterPhone||'') + '</div></td>' +
+                  '<td><span class="blood-badge" style="width:36px;height:36px;font-size:.75rem;">' + (r.bloodGroup||'-') + '</span></td>' +
+                  '<td>' + (r.city||'-') + '</td><td>' + (r.hospital||'-') + '</td>' +
+                  '<td class="text-center fw-700 text-red">' + r.donorsNotified + '</td>' +
+                  '<td>' + badge + '</td>' +
+                  '<td style="white-space:nowrap;font-size:.78rem;">' + fmtDate(r.createdAt) + '</td>' +
+                  '<td>' + action + '</td></tr>';
+          });
+      }
+      buildPager('req-pagination', reqPage, pages, function (p) { reqPage = p; renderRequests(); });
+  }
+
+  function renderDonors() {
+      var items  = FILTERED_DONORS;
+      var total  = items.length;
+      var pages  = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      if (donorPage > pages) donorPage = pages;
+      var start  = (donorPage - 1) * PAGE_SIZE;
+      var end    = Math.min(start + PAGE_SIZE, total);
+
+      document.getElementById('donor-count-label').textContent =
+          total === 0 ? 'No records' : 'Showing ' + (start+1) + '-' + end + ' of ' + total;
+      document.getElementById('donor-page-info').textContent = 'Page ' + donorPage + ' of ' + pages;
+
+      var tbody = document.getElementById('donor-tbody');
+      tbody.innerHTML = '';
+      if (total === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-4">No donors found.</td></tr>';
+      } else {
+          items.slice(start, end).forEach(function (d, i) {
+              var rowNum = total - (start + i);
+              var badge  = d.available
+                  ? '<span class="availability-badge available">Available</span>'
+                  : '<span class="availability-badge unavailable">Unavailable</span>';
+              tbody.innerHTML +=
+                  '<tr><td>' + rowNum + '</td>' +
+                  '<td class="fw-600">' + (d.name||'-') + '</td>' +
+                  '<td><span class="blood-badge" style="width:36px;height:36px;font-size:.75rem;">' + (d.bloodGroup||'-') + '</span></td>' +
+                  '<td>' + (d.city||'-') + '</td><td>' + (d.phone||'-') + '</td>' +
+                  '<td class="text-center fw-700">' + d.totalDonations + '</td>' +
+                  '<td>' + badge + '</td>' +
+                  '<td><form action="/admin/donor/delete/' + d.id + '" method="post" ' +
+                  'onsubmit="return confirm(\'Remove this donor?\')">' +
+                  '<button type="submit" class="btn btn-outline-danger btn-sm">' +
+                  '<i class="bi bi-trash"></i></button></form></td></tr>';
+          });
+      }
+      buildPager('donor-pagination', donorPage, pages, function (p) { donorPage = p; renderDonors(); });
+  }
+
+  function buildPager(containerId, current, total, onClickFn) {
+      var ul = document.getElementById(containerId);
+      ul.innerHTML = '';
+
+      function addBtn(label, page, disabled, active) {
+          var li = document.createElement('li');
+          li.className = 'page-item' + (disabled ? ' disabled' : '') + (active ? ' active' : '');
+          var a = document.createElement('a');
+          a.className    = 'page-link';
+          a.href         = '#';
+          a.style.borderRadius = '6px';
+          a.innerHTML    = label;
+          if (!disabled) {
+              a.addEventListener('click', function (e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onClickFn(page);
+              });
+          }
+          li.appendChild(a);
+          ul.appendChild(li);
+      }
+
+      addBtn('Prev', current - 1, current === 1, false);
+      for (var i = 1; i <= total; i++) addBtn(i, i, false, i === current);
+      addBtn('Next', current + 1, current === total, false);
+  }
+</script>
+
+<style>
+  .pagination .page-item.active .page-link  { background:#c0392b; border-color:#c0392b; color:#fff; }
+  .pagination .page-item.disabled .page-link { color:#adb5bd; pointer-events:none; }
+  .pagination .page-link { color:#c0392b; border:1px solid #dee2e6; padding:5px 12px; }
+  .pagination .page-link:hover { background:#fdecea; color:#c0392b; }
+</style>
+
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('Blood Compatibility')}"></head>
+<body>
+<nav th:replace="~{_layout :: navbar}"></nav>
+
+<!-- Hero -->
+<div style="background:linear-gradient(135deg,hsl(240, 28%, 14%),#2d1b1b);color:#fff;padding:50px 0 40px;">
+    <div class="container text-center">
+        <div style="font-size:3rem;margin-bottom:12px;">🩸</div>
+        <h1 style="font-family:'Fraunces',serif;font-size:2.4rem;font-weight:700;">
+            Blood Compatibility Guide
+        </h1>
+        <p style="color:rgba(255,255,255,0.7);max-width:500px;margin:12px auto 0;">
+            Understanding which blood groups are compatible for donation
+            can save lives in emergencies.
+        </p>
+    </div>
+</div>
+
+<section class="section-pad bg-cream">
+    <div class="container">
+
+        <!-- Key Facts -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card p-4 text-center h-100" style="border-top:4px solid #c0392b;">
+                    <div style="font-size:2.5rem;margin-bottom:12px;">🌍</div>
+                    <h5 class="fw-700">Universal Donor</h5>
+                    <div class="blood-badge mx-auto my-3">O-</div>
+                    <p class="text-muted small">
+                        O- can donate red blood cells to <strong>any</strong> blood group.
+                        Critical for emergencies when the recipient's blood type is unknown.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 text-center h-100" style="border-top:4px solid #27ae60;">
+                    <div style="font-size:2.5rem;margin-bottom:12px;">🎯</div>
+                    <h5 class="fw-700">Universal Recipient</h5>
+                    <div class="blood-badge mx-auto my-3">AB+</div>
+                    <p class="text-muted small">
+                        AB+ can receive red blood cells from <strong>all</strong> blood groups.
+                        They are the universal recipient in transfusions.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 text-center h-100" style="border-top:4px solid #2563eb;">
+                    <div style="font-size:2.5rem;margin-bottom:12px;">⏱️</div>
+                    <h5 class="fw-700">Donation Frequency</h5>
+                    <div style="font-size:1.8rem;font-weight:800;color:#c0392b;margin:12px 0;">56 days</div>
+                    <p class="text-muted small">
+                        Minimum waiting time between whole blood donations.
+                        Your body fully replenishes blood cells in this period.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compatibility Chart -->
+        <div class="card mb-5">
+            <div class="card-header-red">
+                <i class="bi bi-table me-2"></i>Who Can Donate to Whom
+            </div>
+            <div class="table-responsive">
+                <table class="table mb-0 text-center">
+                    <thead>
+                    <tr>
+                        <th class="text-start" style="min-width:110px;">Blood Group</th>
+                        <th>Can Donate To</th>
+                        <th>Can Receive From</th>
+                        <th>Population %</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-start">
+                            <span class="blood-badge" style="width:40px;height:40px;font-size:.8rem;">A+</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag">A+</span>
+                            <span class="compat-tag">AB+</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag recv">A+</span>
+                            <span class="compat-tag recv">A-</span>
+                            <span class="compat-tag recv">O+</span>
+                            <span class="compat-tag recv">O-</span>
+                        </td>
+                        <td class="fw-700 text-red">35.7%</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            <span class="blood-badge" style="width:40px;height:40px;font-size:.8rem;">A-</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag">A+</span>
+                            <span class="compat-tag">A-</span>
+                            <span class="compat-tag">AB+</span>
+                            <span class="compat-tag">AB-</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag recv">A-</span>
+                            <span class="compat-tag recv">O-</span>
+                        </td>
+                        <td class="fw-700 text-red">6.3%</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            <span class="blood-badge" style="width:40px;height:40px;font-size:.8rem;">B+</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag">B+</span>
+                            <span class="compat-tag">AB+</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag recv">B+</span>
+                            <span class="compat-tag recv">B-</span>
+                            <span class="compat-tag recv">O+</span>
+                            <span class="compat-tag recv">O-</span>
+                        </td>
+                        <td class="fw-700 text-red">8.5%</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            <span class="blood-badge" style="width:40px;height:40px;font-size:.8rem;">B-</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag">B+</span>
+                            <span class="compat-tag">B-</span>
+                            <span class="compat-tag">AB+</span>
+                            <span class="compat-tag">AB-</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag recv">B-</span>
+                            <span class="compat-tag recv">O-</span>
+                        </td>
+                        <td class="fw-700 text-red">1.5%</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            <span class="blood-badge" style="width:40px;height:40px;font-size:.8rem;">O+</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag">A+</span>
+                            <span class="compat-tag">B+</span>
+                            <span class="compat-tag">O+</span>
+                            <span class="compat-tag">AB+</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag recv">O+</span>
+                            <span class="compat-tag recv">O-</span>
+                        </td>
+                        <td class="fw-700 text-red">37.4%</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                <span class="blood-badge"
+                      style="width:40px;height:40px;font-size:.8rem;
+                             background:linear-gradient(135deg,#2563eb,#1d4ed8);">O-</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag">A+</span>
+                            <span class="compat-tag">A-</span>
+                            <span class="compat-tag">B+</span>
+                            <span class="compat-tag">B-</span>
+                            <span class="compat-tag">O+</span>
+                            <span class="compat-tag">O-</span>
+                            <span class="compat-tag">AB+</span>
+                            <span class="compat-tag">AB-</span>
+                            <small class="text-muted ms-1">(all)</small>
+                        </td>
+                        <td>
+                            <span class="compat-tag recv">O-</span>
+                        </td>
+                        <td class="fw-700 text-red">6.6%</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                <span class="blood-badge"
+                      style="width:40px;height:40px;font-size:.8rem;
+                             background:linear-gradient(135deg,#27ae60,#1e8449);">AB+</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag">AB+</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag recv">A+</span>
+                            <span class="compat-tag recv">A-</span>
+                            <span class="compat-tag recv">B+</span>
+                            <span class="compat-tag recv">B-</span>
+                            <span class="compat-tag recv">O+</span>
+                            <span class="compat-tag recv">O-</span>
+                            <span class="compat-tag recv">AB+</span>
+                            <span class="compat-tag recv">AB-</span>
+                            <small class="text-muted ms-1">(all)</small>
+                        </td>
+                        <td class="fw-700 text-red">3.4%</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            <span class="blood-badge" style="width:40px;height:40px;font-size:.8rem;">AB-</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag">AB+</span>
+                            <span class="compat-tag">AB-</span>
+                        </td>
+                        <td>
+                            <span class="compat-tag recv">A-</span>
+                            <span class="compat-tag recv">B-</span>
+                            <span class="compat-tag recv">O-</span>
+                            <span class="compat-tag recv">AB-</span>
+                        </td>
+                        <td class="fw-700 text-red">0.6%</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ABO System Explained -->
+        <div class="row g-4 mb-5">
+            <div class="col-12">
+                <div class="card p-4">
+                    <h5 class="fw-800 mb-3" style="font-family:'Fraunces',serif;">
+                        <i class="bi bi-info-circle-fill text-red me-2"></i>
+                        Understanding the ABO + Rh System
+                    </h5>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h6 class="fw-700">ABO Blood Groups</h6>
+                            <p class="text-muted small">
+                                Blood is classified by antigens (proteins) on the surface of red blood cells.
+                                Type A has A antigens, Type B has B antigens, Type AB has both, and Type O has neither.
+                                Donating incompatible blood triggers an immune reaction that can be fatal.
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-700">Rh Factor (+ and -)</h6>
+                            <p class="text-muted small">
+                                The + or - refers to the Rh factor antigen. Rh+ blood has this antigen;
+                                Rh- does not. Rh- donors are highly valuable because they can donate to
+                                both Rh+ and Rh- recipients, while Rh+ donors can only donate to Rh+ recipients.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center">
+            <h5 class="fw-700 mb-3">Know someone who needs blood?</h5>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="/search"   class="btn-red" style="padding:12px 28px;">
+                    <i class="bi bi-search me-2"></i>Find a Donor
+                </a>
+                <a href="/register" class="btn-outline-red" style="padding:12px 28px;">
+                    <i class="bi bi-heart me-2"></i>Become a Donor
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer th:replace="~{_layout :: footer}"></footer>
+<th:block th:replace="~{_layout :: scripts}"></th:block>
+
+<style>
+    .compat-tag {
+      display: inline-block;
+      background: linear-gradient(135deg, #96281b, #e74c3c);
+      color: #fff;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 999px;
+      margin: 2px;
+    }
+    .compat-tag.recv {
+      background: linear-gradient(135deg, #1e8449, #27ae60);
+    }
+</style>
+</body>
+</html>

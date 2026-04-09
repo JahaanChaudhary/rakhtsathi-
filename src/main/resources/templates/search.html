@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('Find Donor')}"></head>
+<body>
+<nav th:replace="~{_layout :: navbar}"></nav>
+
+<div style="background:linear-gradient(135deg,#1a1a2e,#2d1b1b);
+            padding:50px 0 40px;color:#fff;">
+  <div class="container text-center">
+    <h1 style="font-family:'Fraunces',serif;font-size:2.4rem;font-weight:700;">
+      Find a Blood Donor
+    </h1>
+    <p style="color:rgba(255,255,255,0.7);margin-top:8px;">
+      Fill in the details below. We'll instantly notify all matching donors.
+    </p>
+  </div>
+</div>
+
+<section class="section-pad bg-cream">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card p-4 p-md-5">
+          <h5 class="fw-800 mb-4" style="font-family:'Fraunces',serif;font-size:1.4rem;">
+            <i class="bi bi-droplet-fill text-red me-2"></i>Request Details
+          </h5>
+
+          <div class="flash flash-error mb-3" th:if="${error}" th:text="${error}"></div>
+
+          <form action="/search/results" method="post" th:object="${searchForm}" novalidate>
+
+            <p class="text-muted small fw-700 text-uppercase mb-3"
+               style="letter-spacing:.08em;">Your Information</p>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                <input type="text" th:field="*{requesterName}"
+                       th:class="${#fields.hasErrors('requesterName')}
+                                  ? 'form-control is-invalid' : 'form-control'"
+                       placeholder="Your name"/>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('requesterName')}"
+                     th:errors="*{requesterName}">Error</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email <span class="text-danger">*</span></label>
+                <input type="email" th:field="*{requesterEmail}"
+                       th:class="${#fields.hasErrors('requesterEmail')}
+                                  ? 'form-control is-invalid' : 'form-control'"
+                       placeholder="your@email.com"/>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('requesterEmail')}"
+                     th:errors="*{requesterEmail}">Error</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Phone <span class="text-danger">*</span></label>
+                <input type="text" th:field="*{requesterPhone}"
+                       th:class="${#fields.hasErrors('requesterPhone')}
+                                  ? 'form-control is-invalid' : 'form-control'"
+                       placeholder="10 digit number"/>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('requesterPhone')}"
+                     th:errors="*{requesterPhone}">Error</div>
+              </div>
+            </div>
+
+            <hr class="my-4"/>
+
+            <p class="text-muted small fw-700 text-uppercase mb-3"
+               style="letter-spacing:.08em;">Blood Requirement</p>
+            <div class="row g-3 mb-4">
+              <div class="col-md-4">
+                <label class="form-label">Blood Group <span class="text-danger">*</span></label>
+                <select th:field="*{bloodGroup}"
+                        th:class="${#fields.hasErrors('bloodGroup')}
+                                   ? 'form-select is-invalid' : 'form-select'">
+                  <option value="">— Select —</option>
+                  <option th:each="bg : ${bloodGroups}"
+                          th:value="${bg}" th:text="${bg}"/>
+                </select>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('bloodGroup')}"
+                     th:errors="*{bloodGroup}">Error</div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">City <span class="text-danger">*</span></label>
+                <input type="text" th:field="*{city}"
+                       th:class="${#fields.hasErrors('city')}
+                                  ? 'form-control is-invalid' : 'form-control'"
+                       placeholder="Mumbai"/>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('city')}"
+                     th:errors="*{city}">Error</div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Hospital</label>
+                <input type="text" th:field="*{hospital}"
+                       class="form-control" placeholder="Apollo Hospital"/>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Message to Donors</label>
+                <textarea th:field="*{message}" class="form-control" rows="3"
+                          placeholder="Urgency details..."></textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-red w-100" style="padding:14px;font-size:1rem;">
+              <i class="bi bi-send-fill me-2"></i>Search &amp; Notify Donors
+            </button>
+            <p class="text-center text-muted small mt-3">
+              <i class="bi bi-info-circle me-1"></i>
+              All matching donors receive an email notification immediately.
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer th:replace="~{_layout :: footer}"></footer>
+<th:block th:replace="~{_layout :: scripts}"></th:block>
+</body>
+</html>

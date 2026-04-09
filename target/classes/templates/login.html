@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('Login')}"></head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">🩸</div>
+    <h2 class="auth-title">Welcome Back</h2>
+    <p class="auth-sub">Log in to your donor account</p>
+
+    <div class="flash flash-success" th:if="${success}" th:text="${success}"></div>
+    <div class="flash flash-error"   th:if="${error}"   th:text="${error}"></div>
+    <div class="flash flash-info"    th:if="${msg}"     th:text="${msg}"></div>
+
+    <form action="/login" method="post">
+      <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <input type="email" name="email" class="form-control"
+               placeholder="you@example.com" required autofocus/>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control"
+               placeholder="••••••••" required/>
+      </div>
+      <button type="submit" class="btn-red w-100" style="padding:12px;">
+        <i class="bi bi-box-arrow-in-right me-2"></i>Log In
+      </button>
+    </form>
+
+    <p class="text-center mt-4 text-muted small">
+      Don't have an account?
+      <a href="/register" class="text-red fw-700 text-decoration-none">Register here</a>
+    </p>
+    <p class="text-center mt-2">
+      <a href="/" class="text-muted small text-decoration-none">← Back to Home</a>
+    </p>
+  </div>
+</div>
+<th:block th:replace="~{_layout :: scripts}"></th:block>
+</body>
+</html>

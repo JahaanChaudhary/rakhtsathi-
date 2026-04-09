@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{_layout :: head('Register')}"></head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card" style="max-width:500px;">
+    <div class="auth-logo">🩸</div>
+    <h2 class="auth-title">Become a Donor</h2>
+    <p class="auth-sub">Create your free account and start saving lives</p>
+
+    <div class="flash flash-error" th:if="${error}" th:text="${error}"></div>
+
+    <form action="/register" method="post" th:object="${user}" novalidate>
+      <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input type="text" th:field="*{name}"
+               th:class="${#fields.hasErrors('name')}
+                          ? 'form-control is-invalid' : 'form-control'"
+               placeholder="Rahul Sharma"/>
+        <div class="invalid-feedback"
+             th:if="${#fields.hasErrors('name')}"
+             th:errors="*{name}">Name error</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <input type="email" th:field="*{email}"
+               th:class="${#fields.hasErrors('email')}
+                          ? 'form-control is-invalid' : 'form-control'"
+               placeholder="you@example.com"/>
+        <div class="invalid-feedback"
+             th:if="${#fields.hasErrors('email')}"
+             th:errors="*{email}">Email error</div>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Password</label>
+        <input type="password" th:field="*{password}"
+               th:class="${#fields.hasErrors('password')}
+                          ? 'form-control is-invalid' : 'form-control'"
+               placeholder="Minimum 6 characters"/>
+        <div class="invalid-feedback"
+             th:if="${#fields.hasErrors('password')}"
+             th:errors="*{password}">Password error</div>
+      </div>
+      <button type="submit" class="btn-red w-100" style="padding:12px;">
+        <i class="bi bi-person-check me-2"></i>Create Account
+      </button>
+    </form>
+
+    <p class="text-center mt-4 text-muted small">
+      Already have an account?
+      <a href="/login" class="text-red fw-700 text-decoration-none">Log in</a>
+    </p>
+    <p class="text-center mt-2">
+      <a href="/" class="text-muted small text-decoration-none">← Back to Home</a>
+    </p>
+  </div>
+</div>
+<th:block th:replace="~{_layout :: scripts}"></th:block>
+</body>
+</html>
