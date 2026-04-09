@@ -1,0 +1,25 @@
+# Maven build output
+target/
+
+# Compiled files
+*.class
+*.jar
+*.war
+
+# IntelliJ files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sensitive config — never upload to GitHub
+src/main/resources/application.properties
+src/main/resources/application-prod.properties
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
