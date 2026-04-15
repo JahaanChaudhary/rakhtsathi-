@@ -14,7 +14,6 @@ target/
 
 # Sensitive config — never upload to GitHub
 src/main/resources/application.properties
-src/main/resources/application-prod.properties
 
 # OS files
 .DS_Store
