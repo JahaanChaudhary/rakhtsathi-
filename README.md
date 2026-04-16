@@ -11,7 +11,6 @@
 In emergency situations, finding a compatible blood donor quickly can be the difference between life and death. Existing solutions are slow, fragmented, and lack real-time donor availability. RakhtSathi solves this by maintaining a live registry of donors, instantly notifying matching donors via email the moment a request is submitted, and surfacing results in seconds.
 
 ---
-
 ## ✨ Key Features
 
 ### 🔍 Smart Donor Search
@@ -46,7 +45,6 @@ In emergency situations, finding a compatible blood donor quickly can be the dif
 - **DataSeeder** — seeds 1 admin + 20 donors with coordinates + 8 blood requests on first run
 
 ---
-
 ## 🛠️ Tech Stack
 
 | Layer       | Technology                                      |
@@ -60,7 +58,6 @@ In emergency situations, finding a compatible blood donor quickly can be the dif
 | Deploy      | Docker, Railway, managed PostgreSQL             |
 
 ---
-
 ## 🔑 Key Technical Decisions
 
 ### 1. Circular Dependency Resolution
@@ -83,7 +80,6 @@ Without `@Async`, the search results page would block for 3–5 seconds while ea
 All donor and request data is loaded once as JSON using Jackson serialization. JavaScript slices the array per page — no server round-trip on Next/Prev. `e.preventDefault()` stops browser navigation entirely.
 
 ---
-
 ## 🚀 Running Locally
 
 ### Prerequisites
